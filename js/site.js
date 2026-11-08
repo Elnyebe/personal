@@ -353,19 +353,27 @@
 </html>`;
   }
 
-  function setupResumeDownload() {
-    one('#download-resume')?.addEventListener('click', () => {
-      const resumeWindow = window.open('', '_blank');
-      if (!resumeWindow) {
-        window.alert('Allow pop-ups to open your print-ready resume.');
-        return;
-      }
-      resumeWindow.document.open();
-      resumeWindow.document.write(buildResumeDocument());
-      resumeWindow.document.close();
-      window.setTimeout(() => {
-        if (!resumeWindow.closed) resumeWindow.print();
-      }, 250);
+  function setupResumeViewer() {
+    const dialog = one('#resume-dialog');
+    const preview = one('#resume-preview');
+    const pdfDownload = one('#resume-download-pdf');
+    const pdfPath = 'assets/Johndrey_Jester_B_Orense_Resume.pdf';
+    if (!dialog || !preview || !pdfDownload) return;
+
+    one('#view-resume')?.addEventListener('click', () => {
+      if (!dialog.open) dialog.showModal();
+      preview.removeAttribute('src');
+      preview.src = `${pdfPath}?v=${Date.now()}`;
+      pdfDownload.hidden = false;
+    });
+
+    one('#resume-print')?.addEventListener('click', () => {
+      preview.contentWindow?.focus();
+      preview.contentWindow?.print();
+    });
+    all('[data-resume-close]', dialog).forEach((button) => button.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
     });
   }
 
@@ -633,7 +641,7 @@
   setupMobileNavigation();
   setupProjectFilters();
   setupEntranceAnimations();
-  setupResumeDownload();
+  setupResumeViewer();
   setupEmailCopy();
   setupProjectPlanner();
   setupScrollView();

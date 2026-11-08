@@ -8,7 +8,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none';
       script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self';
-      connect-src 'self'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests"
+      connect-src 'self'; frame-src 'self'; worker-src 'none'; upgrade-insecure-requests"
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="description" content="Johndrey Jester B. Orense's portfolio of web development, Python tools, game scripting, and IT support work." />
@@ -52,8 +52,8 @@
           </p>
           <div class="hero-actions">
             <a class="button button-dark" href="#projects">See what I build <span>↓</span></a>
-            <button class="button button-outline" id="download-resume" type="button">
-              Download résumé <span>↗</span>
+            <button class="button button-outline" id="view-resume" type="button" aria-haspopup="dialog">
+              View résumé <span>↗</span>
             </button>
           </div>
           <div class="hero-meta">
@@ -544,6 +544,21 @@
           ✳
         </div>
       </section>
+      <dialog class="resume-dialog" id="resume-dialog" aria-labelledby="resume-viewer-title">
+        <div class="resume-viewer">
+          <div class="resume-viewer-header">
+            <h2 id="resume-viewer-title">Résumé</h2>
+            <button class="flow-close" type="button" data-resume-close aria-label="Close résumé preview">×</button>
+          </div>
+          <div class="resume-preview">
+            <iframe id="resume-preview" title="Résumé preview" sandbox="allow-same-origin allow-modals" referrerpolicy="no-referrer"></iframe>
+          </div>
+          <div class="resume-viewer-actions">
+            <button class="button button-outline" id="resume-print" type="button">Print / Save PDF</button>
+            <a class="button button-outline" id="resume-download-pdf" href="assets/Johndrey_Jester_B_Orense_Resume.pdf" download hidden>Download PDF <span>↓</span></a>
+          </div>
+        </div>
+      </dialog>
       <dialog class="project-flow" id="project-flow" aria-labelledby="flow-title">
         <div class="flow-card">
           <div class="flow-header">
