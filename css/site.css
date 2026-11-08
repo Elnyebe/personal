@@ -21,7 +21,7 @@
 
 html {
   min-width: 320px;
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
   scroll-padding-top: 76px;
   scrollbar-width: none;
@@ -1332,8 +1332,25 @@ a {
   }
 
   html {
+    scroll-behavior: smooth;
     scroll-padding-top: 68px;
     scroll-snap-type: y proximity;
+  }
+
+  .slide-page {
+    scroll-snap-stop: normal;
+  }
+
+  .reveal, .project-card.reveal, .toolbox-grid article.reveal {
+    transform: translate3d(0, 12px, 0);
+    filter: none;
+    transition-duration: .4s;
+    transition-delay: 0ms;
+    will-change: auto;
+  }
+
+  .reveal.is-visible, .project-card.reveal.is-visible, .toolbox-grid article.reveal.is-visible {
+    transform: translate3d(0, 0, 0);
   }
 
   .site-header {
