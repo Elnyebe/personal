@@ -129,6 +129,24 @@
       skills: all('.tag-row span', item).map((skill) => skill.textContent.trim()),
     }));
     const skills = all('.skills-strip b').map((skill) => skill.textContent.trim());
+    const skillGroups = [
+      { label: 'Web development', items: ['Front-end Development', 'Back-end Development'] },
+      { label: 'Programming', items: ['Python', 'Lua', 'C++'] },
+      { label: 'IT support and networking', items: ['PC Assembly', 'Networking', 'OTDR Testing', 'Fiber-Optic Splicing'] },
+      { label: 'Security', items: ['Cybersecurity', 'Red Teaming', 'Blue Teaming'] },
+      { label: 'Tools', items: ['VS Code'] },
+    ].map(({ label, items }) => {
+      const matched = items.filter((skill) => skills.includes(skill));
+      return matched.length
+        ? `<div class="skill-group"><h3>${escapeHTML(label)}</h3><p>${matched.map(escapeHTML).join(' · ')}</p></div>`
+        : '';
+    }).join('');
+    const contactLinks = [
+      email ? `<a href="mailto:${escapeHTML(email)}">${escapeHTML(email)}</a>` : '',
+      ...all('.site-footer .social-links a')
+        .filter((link) => !link.href.startsWith('mailto:'))
+        .map((link) => `<a href="${escapeHTML(link.href)}">${escapeHTML(link.textContent.replace(/↗/g, '').trim())}</a>`),
+    ].filter(Boolean).join('');
 
     const experienceHTML = experience.map((item) => `
       <article>
@@ -201,9 +219,17 @@
       }
 
       header .contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
         margin-top: 7px;
         color: #566981;
         font-size: 9pt;
+      }
+
+      header .contact a {
+        color: inherit;
+        text-decoration: none;
       }
 
       h2 {
@@ -254,9 +280,29 @@
       }
 
       .tags,
-      .skill-list {
+      .skill-group p {
         color: #536a84;
-        font-size: 8.5pt;
+        font-size: 9pt;
+      }
+
+      .skill-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px 22px;
+      }
+
+      .skill-group {
+        break-inside: avoid;
+      }
+
+      .skill-group h3 {
+        margin: 0 0 2px;
+        color: #29486c;
+        font-size: 9pt;
+      }
+
+      .skill-group p {
+        margin: 0;
       }
 
       .profile p {
@@ -279,12 +325,16 @@
     <header>
       <h1>${escapeHTML(name)}</h1>
       <p>${escapeHTML(role)}</p>
-      <div class="contact">${escapeHTML(email)}</div>
+      <div class="contact">${contactLinks}</div>
     </header>
     <main>
       <section class="profile">
         <h2>Profile</h2>
         ${profile.map((paragraph) => `<p>${escapeHTML(paragraph)}</p>`).join('')}
+      </section>
+      <section>
+        <h2>Skills</h2>
+        <div class="skill-grid">${skillGroups}</div>
       </section>
       <section>
         <h2>Experience</h2>
@@ -297,10 +347,6 @@
       <section>
         <h2>Education</h2>
         ${educationHTML}
-      </section>
-      <section>
-        <h2>Skills</h2>
-        <p class="skill-list">${skills.map(escapeHTML).join(' &middot; ')}</p>
       </section>
     </main>
   </body>
